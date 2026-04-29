@@ -211,4 +211,4 @@ DRY_RUN=1 START_HERMES=0 sudo -E ./fix-dbus-and-start.sh
 
 ## License
 
-当前仓库尚未声明许可证。公开复用前，建议补充 `LICENSE` 文件。
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
