@@ -1,4 +1,4 @@
-# fix-dbus-and-start
+# hermes-dbus-fix
 
 [![Shell](https://img.shields.io/badge/Shell-Bash-4EAA25?logo=gnu-bash&logoColor=white)](https://www.gnu.org/software/bash/)
 [![Platform](https://img.shields.io/badge/Platform-Debian%20%7C%20Ubuntu-blue)](#requirements)
@@ -39,59 +39,61 @@ Failed to connect to bus
 推荐先用 `DRY_RUN=1` 看看脚本会做什么：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/brucelau1987cn/hermes-fix/main/fix-dbus-and-start.sh | DRY_RUN=1 sudo -E bash
+curl -fsSL https://raw.githubusercontent.com/brucelau1987cn/hermes-dbus-fix/main/hermes-dbus-fix.sh | DRY_RUN=1 sudo -E bash
 ```
 
 确认无误后正式执行：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/brucelau1987cn/hermes-fix/main/fix-dbus-and-start.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/brucelau1987cn/hermes-dbus-fix/main/hermes-dbus-fix.sh | sudo bash
 ```
 
 或者先下载再执行：
 
 ```bash
-wget -q https://raw.githubusercontent.com/brucelau1987cn/hermes-fix/main/fix-dbus-and-start.sh
-chmod +x fix-dbus-and-start.sh
-sudo ./fix-dbus-and-start.sh
+wget -q https://raw.githubusercontent.com/brucelau1987cn/hermes-dbus-fix/main/hermes-dbus-fix.sh
+chmod +x hermes-dbus-fix.sh
+sudo ./hermes-dbus-fix.sh
 ```
+
+> 兼容说明：仓库仍保留 `fix-dbus-and-start.sh` 作为旧入口包装脚本，已有旧命令不会立刻失效；新文档统一推荐使用 `hermes-dbus-fix.sh`。
 
 ## Usage
 
 默认行为：修复 root 的用户级 D-Bus session，并启动 `hermes gateway`。
 
 ```bash
-sudo ./fix-dbus-and-start.sh
+sudo ./hermes-dbus-fix.sh
 ```
 
 只修复 D-Bus，不启动 `hermes gateway`：
 
 ```bash
-START_HERMES=0 sudo -E ./fix-dbus-and-start.sh
+START_HERMES=0 sudo -E ./hermes-dbus-fix.sh
 ```
 
 修复指定用户：
 
 ```bash
-TARGET_USER=ubuntu sudo -E ./fix-dbus-and-start.sh
+TARGET_USER=ubuntu sudo -E ./hermes-dbus-fix.sh
 ```
 
 修复指定 UID：
 
 ```bash
-TARGET_UID=1000 sudo -E ./fix-dbus-and-start.sh
+TARGET_UID=1000 sudo -E ./hermes-dbus-fix.sh
 ```
 
 修复非 root 用户，并以该用户启动 `hermes gateway`：
 
 ```bash
-TARGET_USER=ubuntu HERMES_AS_TARGET=1 sudo -E ./fix-dbus-and-start.sh
+TARGET_USER=ubuntu HERMES_AS_TARGET=1 sudo -E ./hermes-dbus-fix.sh
 ```
 
 指定 `hermes` 可执行文件路径：
 
 ```bash
-HERMES_BIN=/usr/local/bin/hermes sudo -E ./fix-dbus-and-start.sh
+HERMES_BIN=/usr/local/bin/hermes sudo -E ./hermes-dbus-fix.sh
 ```
 
 ## Configuration
@@ -152,7 +154,7 @@ HERMES_BIN=/usr/local/bin/hermes sudo -E ./fix-dbus-and-start.sh
 如果安装了 `shellcheck`，也建议额外执行：
 
 ```bash
-shellcheck fix-dbus-and-start.sh tests/run-tests.sh
+shellcheck hermes-dbus-fix.sh tests/run-tests.sh
 ```
 
 ## Troubleshooting
@@ -162,7 +164,7 @@ shellcheck fix-dbus-and-start.sh tests/run-tests.sh
 先只修复 D-Bus 并查看日志：
 
 ```bash
-START_HERMES=0 sudo -E ./fix-dbus-and-start.sh
+START_HERMES=0 sudo -E ./hermes-dbus-fix.sh
 journalctl -u user@<uid>.service --no-pager -n 100
 ```
 
@@ -171,13 +173,13 @@ journalctl -u user@<uid>.service --no-pager -n 100
 确认 `hermes` 已安装并在 PATH 中，或者指定完整路径：
 
 ```bash
-HERMES_BIN=/path/to/hermes sudo -E ./fix-dbus-and-start.sh
+HERMES_BIN=/path/to/hermes sudo -E ./hermes-dbus-fix.sh
 ```
 
 ### 不想重启用户服务
 
 ```bash
-RESTART_USER_UNIT=0 sudo -E ./fix-dbus-and-start.sh
+RESTART_USER_UNIT=0 sudo -E ./hermes-dbus-fix.sh
 ```
 
 ### 非 root 用户启动 gateway 失败
@@ -185,7 +187,7 @@ RESTART_USER_UNIT=0 sudo -E ./fix-dbus-and-start.sh
 尝试以目标用户身份启动：
 
 ```bash
-TARGET_USER=ubuntu HERMES_AS_TARGET=1 sudo -E ./fix-dbus-and-start.sh
+TARGET_USER=ubuntu HERMES_AS_TARGET=1 sudo -E ./hermes-dbus-fix.sh
 ```
 
 ## Development
@@ -193,8 +195,8 @@ TARGET_USER=ubuntu HERMES_AS_TARGET=1 sudo -E ./fix-dbus-and-start.sh
 克隆仓库：
 
 ```bash
-git clone https://github.com/brucelau1987cn/hermes-fix.git
-cd hermes-fix
+git clone https://github.com/brucelau1987cn/hermes-dbus-fix.git
+cd hermes-dbus-fix
 ```
 
 运行测试：
@@ -206,7 +208,7 @@ cd hermes-fix
 查看 dry-run 行为：
 
 ```bash
-DRY_RUN=1 START_HERMES=0 sudo -E ./fix-dbus-and-start.sh
+DRY_RUN=1 START_HERMES=0 sudo -E ./hermes-dbus-fix.sh
 ```
 
 ## License
